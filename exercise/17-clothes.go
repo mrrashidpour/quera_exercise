@@ -10,7 +10,6 @@ import (
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
-	// خواندن لیست‌ها
 	scanner.Scan()
 	coats := parseLine(scanner.Text())
 	scanner.Scan()
@@ -24,7 +23,6 @@ func main() {
 	scanner.Scan()
 	season := strings.ToUpper(strings.TrimSpace(scanner.Text()))
 
-	// اعمال قوانین فصل
 	if season == "SUMMER" {
 		coats = []string{}
 		jackets = []string{}
@@ -42,7 +40,6 @@ func main() {
 		coats = allowedCoats
 	}
 
-	// چاپ ترکیب‌ها
 	if season == "WINTER" {
 		printWinterCombinations(coats, shirts, pants, jackets)
 	} else {
@@ -64,12 +61,10 @@ func printCombinations(coats, shirts, pants, caps []string, season string) {
 		for _, shirt := range shirts {
 			for _, pant := range pants {
 				if season == "SUMMER" {
-					// کلاه حتماً باید باشد، پس حالت بدون کلاه حذف شد
 					for _, cap := range caps {
 						fmt.Printf("SHIRT: %s PANTS: %s CAP: %s\n", shirt, pant, cap)
 					}
 				} else if season == "SPRING" || season == "FALL" {
-					// کت اختیاری، کلاه اختیاری
 					for _, cap := range append([]string{""}, caps...) {
 						line := ""
 						if coat != "" {
@@ -90,7 +85,6 @@ func printCombinations(coats, shirts, pants, caps []string, season string) {
 func printWinterCombinations(coats, shirts, pants, jackets []string) {
 	for _, shirt := range shirts {
 		for _, pant := range pants {
-			// فقط یکی از کت یا ژاکت
 			for _, coat := range coats {
 				fmt.Printf("COAT: %s SHIRT: %s PANTS: %s\n", coat, shirt, pant)
 			}
