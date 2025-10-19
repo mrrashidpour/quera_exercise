@@ -5,7 +5,6 @@ import (
 	"sync"
 )
 
-// Database اینترفیس مدیریت حافظه برنامه
 type Database interface {
 	GetTaskList() []Task
 	GetTask(name string) (Task, error)
@@ -13,20 +12,15 @@ type Database interface {
 	DelTask(name string) error
 }
 
-// memoryDB یک پیاده‌سازی ساده از Database با حافظه داخلی
 type memoryDB struct {
 	mu    sync.RWMutex
 	tasks map[string]Task
 }
 
-// NewDatabase سازنده حافظه
 func NewDatabase() Database {
-	return &memoryDB{
-		tasks: make(map[string]Task),
-	}
+	return &memoryDB{tasks: make(map[string]Task)}
 }
 
-// GetTaskList بازگرداندن لیست تمام تسک‌ها
 func (db *memoryDB) GetTaskList() []Task {
 	db.mu.RLock()
 	defer db.mu.RUnlock()
@@ -38,7 +32,6 @@ func (db *memoryDB) GetTaskList() []Task {
 	return list
 }
 
-// GetTask پیدا کردن تسک با نام
 func (db *memoryDB) GetTask(name string) (Task, error) {
 	db.mu.RLock()
 	defer db.mu.RUnlock()
@@ -49,7 +42,6 @@ func (db *memoryDB) GetTask(name string) (Task, error) {
 	return nil, errors.New("task not found")
 }
 
-// SaveTask ذخیره یک تسک
 func (db *memoryDB) SaveTask(task Task) error {
 	if task == nil {
 		return errors.New("task cannot be nil")
@@ -62,7 +54,6 @@ func (db *memoryDB) SaveTask(task Task) error {
 	return nil
 }
 
-// DelTask حذف یک تسک با نام
 func (db *memoryDB) DelTask(name string) error {
 	db.mu.Lock()
 	defer db.mu.Unlock()

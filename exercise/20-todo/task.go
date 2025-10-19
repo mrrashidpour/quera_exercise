@@ -20,8 +20,6 @@ type taskStruct struct {
 	action      func()
 }
 
-//func NewTask(func(), time.Time, string, string) (*struct{}, error)
-
 func NewTask(action func(), alarmTime time.Time, name string, description string) (*taskStruct, error) {
 	if action == nil {
 		return nil, errors.New("action cannot be nil")
